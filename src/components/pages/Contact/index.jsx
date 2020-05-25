@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Menu = () => {
+const Contact = () => {
 
   return (
     <React.Fragment>
-        <div>Menu</div>
+        <div>Contact</div>
     </React.Fragment>
   );
 }
 
-export default Menu;
+export default Contact;

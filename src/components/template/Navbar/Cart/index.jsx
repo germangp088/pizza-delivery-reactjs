@@ -31,6 +31,11 @@ const Cart = (props) => {
         <AppConsumer>
           {value => {
             const { cart, removeToCart } = value;
+            let products = 0;
+            cart.forEach((product) => {
+              products += product.quantity
+            });
+
             return (
                 <React.Fragment>
                       <Button
@@ -41,7 +46,7 @@ const Cart = (props) => {
                           aria-haspopup="true"
                           onClick={handleToggle}
                       >
-                        <Badge badgeContent={cart.length} color="secondary">
+                        <Badge badgeContent={products} color="secondary">
                           <ShoppingCartIcon />
                         </Badge>
                       </Button>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getProducts } from "./request";
+import { getProducts, getShippingFee, getCurrencies } from "./request";
 
 const AppContext = React.createContext();
 
@@ -7,7 +7,9 @@ class AppProvider extends Component {
   state = {
     products: [],
     cart: [],
-    errorProducts: false
+    currencies: [],
+    shippingFee: 0,
+    errorMessage: ''
   };
 
   async componentDidMount() {
@@ -16,10 +18,12 @@ class AppProvider extends Component {
 
   getData = async() => {
     try {
-    await this.getProducts();
+      await this.getProducts();
+      await this.getShippingFee();
+      await this.getCurrencies();
     } catch (error) {
       this.setState({
-        errorProducts: true
+        errorMessage: error.message
       });
     }
   }
@@ -28,6 +32,20 @@ class AppProvider extends Component {
     const products = await getProducts();
     this.setState({
       products: products
+    });
+  }
+
+  getShippingFee = async() => {
+    const shippingFee = await getShippingFee();
+    this.setState({
+      shippingFee: shippingFee
+    });
+  }
+
+  getCurrencies = async() => {
+    const currencies = await getCurrencies();
+    this.setState({
+      currencies: currencies
     });
   }
 
@@ -53,13 +71,20 @@ class AppProvider extends Component {
     });
   };
 
+  resetCart = () => {
+    this.setState({
+      cart: []
+    });
+  };
+
   render() {
     return (
       <AppContext.Provider
         value={{
           ...this.state,
           addToCart: this.addToCart,
-          removeToCart: this.removeToCart
+          removeToCart: this.removeToCart,
+          resetCart: this.resetCart
         }}
       >
         {this.props.children}

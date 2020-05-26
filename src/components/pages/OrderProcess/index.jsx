@@ -5,6 +5,11 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import CheckOut from './CheckOut';
+import Order from './Order';
+import CustomerForm from './CustomerForm';
+import { AppConsumer } from "../../../context";
+import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,24 +24,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function getSteps() {
-  return ['Check order', 'Personal information', 'Checkout'];
-}
-
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return 'Check order';
-    case 1:
-      return 'Personal information';
-    case 2:
-      return 'Checkout';
-    default:
-      return 'Unknown step';
-  }
-}
 
 const OrderProcess = () => {
+
+  const getSteps = () => ['Personal information', 'Checkout'];
+  
+  const getStepContent = (step) => {
+    switch (step) {
+      case 0:
+        return <CustomerForm />;
+      case 1:
+        return <Order />;
+      default:
+        return 'Unknown step';
+    }
+  }
+
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
@@ -62,48 +65,58 @@ const OrderProcess = () => {
   };
 
   return (
-    <div className={classes.root}>
-      <Stepper activeStep={activeStep}>
-        {steps.map((label, index) => {
-          const stepProps = {};
-          const labelProps = {};
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
-          return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
-      <div>
-        {activeStep === steps.length ? (
-          <div>
-            <Typography className={classes.instructions}>
-              All steps completed - you&apos;re finished
-            </Typography>
-          </div>
-        ) : (
-          <div>
-            <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+    <AppConsumer>
+      {value => {
+        const { cart } = value;
+        return (
+          <div className={classes.root}>
+            {
+              cart.length === 0 && <Redirect to='/'/>
+            }
+            <Stepper activeStep={activeStep}>
+              {steps.map((label, index) => {
+                const stepProps = {};
+                const labelProps = {};
+                if (isStepSkipped(index)) {
+                  stepProps.completed = false;
+                }
+                return (
+                  <Step key={label} {...stepProps}>
+                    <StepLabel {...labelProps}>{label}</StepLabel>
+                  </Step>
+                );
+              })}
+            </Stepper>
             <div>
-              <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                Back
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                className={classes.button}
-              >
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-              </Button>
+              {activeStep === steps.length ? (
+                <div>
+                  <Typography className={classes.instructions}>
+                    All steps completed - you&apos;re finished
+                  </Typography>
+                </div>
+              ) : (
+                <div>
+                  <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+                  <div>
+                    <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                      Back
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                      className={classes.button}
+                    >
+                      {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        )}
-      </div>
-    </div>
+        );
+      }}
+    </AppConsumer>
   );
 }
 

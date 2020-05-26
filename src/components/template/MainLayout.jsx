@@ -8,6 +8,17 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: theme.spacing(2),
   },
+  navbar: {
+    position: 'absolute',
+    right: 0,
+    backgroundColor: theme.palette.primary.main,
+  },
+  navitem: {
+    color: theme.palette.background.default,
+    '&$selected': {
+      color: theme.palette.secondary.main,
+    },
+  },
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -23,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
     color: theme.palette.background.default,
   },
+  selected: {},
 }));
 
 const MainLayout = (props) => {
@@ -32,9 +44,9 @@ const MainLayout = (props) => {
   return (
       <div className={classes.root}>
         <Header classes={classes} />
-          <Container component="main" className={classes.main} maxWidth="sm">
-            {children}
-          </Container>
+        <Container component="main" className={classes.main} maxWidth="sm">
+          {children}
+        </Container>
         <Footer classes={classes} />
       </div>
   );

@@ -8,6 +8,7 @@ class AppProvider extends Component {
     products: [],
     cart: [],
     currencies: [],
+    currency: {},
     subTotal: 0,
     shippingFee: 0,
     total: 0,
@@ -47,6 +48,7 @@ class AppProvider extends Component {
   getCurrencies = async() => {
     const currencies = await getCurrencies();
     this.setState({
+      currency: currencies.find(x => x.currency === "Euro"),
       currencies: currencies
     });
   }
@@ -75,6 +77,12 @@ class AppProvider extends Component {
     });
   };
 
+  changeCurrency = (currency) => {
+    this.setState({
+      currency: currency
+    });
+  }
+
   calculateSubtotal = (cart) => {
     const shippingFee = parseFloat(this.state.shippingFee);
     let subTotal = 0;
@@ -98,7 +106,8 @@ class AppProvider extends Component {
           ...this.state,
           addToCart: this.addToCart,
           removeToCart: this.removeToCart,
-          resetCart: this.resetCart
+          resetCart: this.resetCart,
+          changeCurrency: this.changeCurrency
         }}
       >
         {this.props.children}

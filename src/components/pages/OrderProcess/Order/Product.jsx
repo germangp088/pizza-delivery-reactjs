@@ -11,7 +11,7 @@ const Product = (props) => {
             <Item
                 primary={product.name}
                 secondary={product.description}
-                price={`$${parseFloat(product.quantity) * parseFloat(product.price)}`}
+                price={`${props.symbol}${parseFloat(product.quantity) * parseFloat(product.price)}`}
                 variant="body2"
             >
                 <Typography><strong>Qty</strong>: {product.quantity}</Typography>

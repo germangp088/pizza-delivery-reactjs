@@ -8,7 +8,7 @@ const CartMenuItem = (props) => {
     const { product, removeToCart } = props;
     return (
         <MenuItem>
-            <FormHelperText component="p">{product.name} - €{product.price} - Qty: {product.quantity}</FormHelperText>
+            <FormHelperText component="p">{product.name} - €{parseFloat(product.price).toFixed(2)} - Qty: {product.quantity}</FormHelperText>
             <IconButton
                 color="primary"
                 aria-label="remove to shopping cart"

@@ -73,7 +73,7 @@ const Product = (props) => {
               </CardContent>
               <CardActions>
                 <Typography gutterBottom variant="h5" component="h2">
-                  €{product.price}
+                  €{parseFloat(product.price).toFixed(2)}
                 </Typography>
                 <TextField
                   id="quantity"

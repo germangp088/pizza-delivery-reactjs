@@ -30,7 +30,7 @@ const CustomerForm = (props) => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Email"
             name="email"
             defaultValue={email}
             onBlur={(e)=> props.changeCustomerValue("email", e.target.value)}

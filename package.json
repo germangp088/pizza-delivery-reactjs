@@ -17,6 +17,7 @@
     "react-dom": "latest",
     "react-router-dom": "^5.2.0",
     "react-scripts": "latest",
+    "react-text-mask": "^5.4.3",
     "superagent": "^5.2.2"
   },
   "browserslist": {

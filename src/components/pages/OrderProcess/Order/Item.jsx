@@ -21,19 +21,19 @@ const Item = (props) => {
     const classes = useStyles();
 
     return (
-            <ListItem className={classes.listItem}>
-                <ListItemText primary={props.primary} secondary={props.secondary} />
-                <List>
-                    <ListItem>
-                        <Typography variant={props.variant} className={props.className}>
-                            {props.price}
-                        </Typography>
-                    </ListItem>
-                    <ListItem>
-                        {props.children}
-                    </ListItem>
-                </List>
-            </ListItem>
+        <ListItem className={classes.listItem}>
+            <ListItemText primary={props.primary} secondary={props.secondary} />
+            <List>
+                <ListItem>
+                    <Typography variant={props.variant} className={props.className}>
+                        {props.price}
+                    </Typography>
+                </ListItem>
+                <ListItem>
+                    {props.children}
+                </ListItem>
+            </List>
+        </ListItem>
     );
 }
 

@@ -8,7 +8,9 @@ class AppProvider extends Component {
     products: [],
     cart: [],
     currencies: [],
+    subTotal: 0,
     shippingFee: 0,
+    total: 0,
     errorMessage: ''
   };
 
@@ -53,29 +55,41 @@ class AppProvider extends Component {
     const pc = this.state.cart.find(x => x.id === product.id);
     if(pc) {
       pc.quantity += parseInt(quantity);
-      this.setState({
-        cart: this.state.cart
-      });
+      this.calculateSubtotal(this.state.cart);
     } else {
       product.quantity = parseInt(quantity);
-      this.setState({
-        cart: [...this.state.cart, product]
-      });
+      this.calculateSubtotal([...this.state.cart, product]);
     }
   };
 
   removeToCart = id => {
     const newCart = this.state.cart.filter(x => x.id !== id);
-    this.setState({
-      cart: newCart
-    });
+    this.calculateSubtotal(newCart);
   };
 
   resetCart = () => {
     this.setState({
-      cart: []
+      cart: [],
+      subTotal: 0,
+      total: 0
     });
   };
+
+  calculateSubtotal = (cart) => {
+    const shippingFee = parseFloat(this.state.shippingFee);
+    let subTotal = 0;
+    cart.forEach((product) => {
+      subTotal += parseFloat(product.quantity) * parseFloat(product.price)
+    });
+    // eslint-disable-next-line
+    const total = eval(subTotal) + eval(shippingFee);
+
+    this.setState({
+      cart: cart,
+      subTotal: parseFloat(subTotal).toFixed(2),
+      total: parseFloat(total).toFixed(2)
+    });
+  }
 
   render() {
     return (

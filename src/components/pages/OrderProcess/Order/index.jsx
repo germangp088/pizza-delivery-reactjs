@@ -21,7 +21,8 @@ const Order = () => {
   return (
     <AppConsumer>
       {value => {
-        const { cart, removeToCart, shippingFee } = value;
+        const { cart, removeToCart, subTotal, shippingFee, total } = value;
+
         return (
             <React.Fragment>
                 <Typography variant="h6" gutterBottom>
@@ -36,15 +37,20 @@ const Order = () => {
                     />
                   ))}
                   <Item
+                    primary="Sub Total"
+                    variant="subtitle1"
+                    price={`€${subTotal}`}
+                  />
+                  <Item
                     primary="Shipping"
                     variant="subtitle1"
-                    price={`$${shippingFee}`}
+                    price={`€${shippingFee}`}
                   />
                   <Item
                     primary="Total"
                     variant="subtitle1"
                     className={classes.total}
-                    price="$34.06"
+                    price={`€${total}`}
                   />
                 </List>
             </React.Fragment>

@@ -31,12 +31,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Product = (props) => {
+
+  const onChange = (e) => {
+    console.log(e.target.value)
+    if(e.target.value < 0){
+      return;
+    }
+  }
+
   const classes = useStyles();
   const product = props.product;
   const description = product.description.split("Ingredients:");
 
   return (
-    <Grid item key={`Product_${product.id}`} xs={12} sm={6} md={4}>
+    <Grid item xs={12} sm={6} md={4}>
       <Card className={classes.card}>
         <CardMedia
           className={classes.cardMedia}
@@ -61,6 +69,7 @@ const Product = (props) => {
             type="number"
             className={classes.root}
             defaultValue={0}
+            onChange={onChange}
           />
           <Button size="small" color="primary">
             Add

@@ -20,6 +20,6 @@ const App = () => {
                 </Switch>
             </MainLayout>
         </HashRouter>
-    )
+    );
 }
 export default App;

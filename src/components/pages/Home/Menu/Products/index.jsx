@@ -11,7 +11,7 @@ const Products = (props) => {
         </Typography>
         <Grid container spacing={4}>
           {props.products.map((product) => (
-            <Product key={`Product_${product.id}`} product={product} />
+            <Product key={`Product_${product.id}`} product={product} cart={props.cart} />
           ))}
         </Grid>
     </React.Fragment>

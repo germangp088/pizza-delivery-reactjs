@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -8,7 +7,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import IconButton from '@material-ui/core/IconButton';
 import Ingredients from './Ingredients';
+import { AppConsumer } from "../../../../../context";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -32,51 +34,67 @@ const useStyles = makeStyles((theme) => ({
 
 const Product = (props) => {
 
+  const product = props.product;
+  const [values, setValues] = React.useState({
+    quantity: 1
+  });
+  
   const onChange = (e) => {
-    console.log(e.target.value)
-    if(e.target.value < 0){
+    if(!e.target.value){
+      setValues({ quantity: 1 });
       return;
     }
+    setValues({ quantity: parseInt(e.target.value) });
   }
 
   const classes = useStyles();
-  const product = props.product;
   const description = product.description.split("Ingredients:");
 
   return (
-    <Grid item xs={12} sm={6} md={4}>
-      <Card className={classes.card}>
-        <CardMedia
-          className={classes.cardMedia}
-          image={`/images/${product.image}`}
-          title={product.name}
-        />
-        <CardContent className={classes.cardContent}>
-          <Typography gutterBottom variant="h5" component="h2">
-            {product.name}
-          </Typography>
-          <Typography>
-            {description[0]}
-            {description.length > 1 && <Ingredients ingredients={description[1]} />}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small" color="secondary">
-            Remove
-          </Button>
-          <TextField
-            id="quantity"
-            type="number"
-            className={classes.root}
-            defaultValue={0}
-            onChange={onChange}
-          />
-          <Button size="small" color="primary">
-            Add
-          </Button>
-        </CardActions>
-      </Card>
-    </Grid>
+    <AppConsumer>
+      {value => {
+        const { addToCart} = value;
+        return (
+          <Grid item xs={12} sm={6} md={4}>
+            <Card className={classes.card}>
+              <CardMedia
+                className={classes.cardMedia}
+                image={`/images/${product.image}`}
+                title={product.name}
+              />
+              <CardContent className={classes.cardContent}>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {product.name}
+                </Typography>
+                <Typography>
+                  {description[0]}
+                  {description.length > 1 && <Ingredients ingredients={description[1]} />}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <TextField
+                  id="quantity"
+                  type="number"
+                  className={classes.root}
+                  InputProps={{ inputProps: { min: 1 } }}
+                  value={values.quantity}
+                  onChange={onChange}
+                />
+                <IconButton
+                color="primary"
+                aria-label="add to shopping cart"
+                onClick={() => {
+                  addToCart(product, values.quantity);
+                  setValues({ quantity: 1 });
+                }}>
+                  <AddShoppingCartIcon />
+                </IconButton>
+              </CardActions>
+            </Card>
+          </Grid>
+        );
+      }}
+    </AppConsumer>
   );
 }
 

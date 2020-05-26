@@ -6,7 +6,8 @@ const AppContext = React.createContext();
 class AppProvider extends Component {
   state = {
     products: [],
-    errorMessage: ''
+    cart: [],
+    errorProducts: false
   };
 
   async componentDidMount() {
@@ -18,7 +19,7 @@ class AppProvider extends Component {
     await this.getProducts();
     } catch (error) {
       this.setState({
-        errorMessage: error.message
+        errorProducts: true
       });
     }
   }
@@ -30,8 +31,19 @@ class AppProvider extends Component {
     });
   }
 
-  addToCart = id => {
-    console.log(`hello from add to cart is ${id} `);
+  addToCart = (product, quantity) => {
+    const pc = this.state.cart.find(x => x.id === product.id);
+    if(pc) {
+      pc.quantity += parseInt(quantity);
+      this.setState({
+        cart: this.state.cart
+      });
+    } else {
+      product.quantity = parseInt(quantity);
+      this.setState({
+        cart: [...this.state.cart, product]
+      });
+    }
   };
 
   render() {

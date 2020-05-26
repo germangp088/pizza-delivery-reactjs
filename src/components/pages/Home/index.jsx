@@ -7,10 +7,10 @@ const Home = () => {
   return (
     <AppConsumer>
       {value => {
-        const { errorProducts, products, cart} = value;
+        const { errorMessage, products, cart} = value;
         return (
           <main>
-            <FormHelperText error={true}>{ errorProducts && 'There was an error trying to get products, come back later.'}</FormHelperText>
+            <FormHelperText error={true}>{ errorMessage && 'There was an error trying to retrieve information, come back later.'}</FormHelperText>
             <Menu products={products} cart={cart} />
           </main>
         );

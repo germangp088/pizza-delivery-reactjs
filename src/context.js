@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getProducts } from "./request";
+import { getProducts, getShippingFee, getCurrencies } from "./request";
 
 const AppContext = React.createContext();
 
@@ -7,7 +7,12 @@ class AppProvider extends Component {
   state = {
     products: [],
     cart: [],
-    errorProducts: false
+    currencies: [],
+    currency: {},
+    subTotal: 0,
+    shippingFee: 0,
+    total: 0,
+    errorMessage: ''
   };
 
   async componentDidMount() {
@@ -16,10 +21,12 @@ class AppProvider extends Component {
 
   getData = async() => {
     try {
-    await this.getProducts();
+      await this.getProducts();
+      await this.getShippingFee();
+      await this.getCurrencies();
     } catch (error) {
       this.setState({
-        errorProducts: true
+        errorMessage: error.message
       });
     }
   }
@@ -31,27 +38,66 @@ class AppProvider extends Component {
     });
   }
 
+  getShippingFee = async() => {
+    const shippingFee = await getShippingFee();
+    this.setState({
+      shippingFee: shippingFee
+    });
+  }
+
+  getCurrencies = async() => {
+    const currencies = await getCurrencies();
+    this.setState({
+      currency: currencies.find(x => x.currency === "Euro"),
+      currencies: currencies
+    });
+  }
+
   addToCart = (product, quantity) => {
     const pc = this.state.cart.find(x => x.id === product.id);
     if(pc) {
       pc.quantity += parseInt(quantity);
-      this.setState({
-        cart: this.state.cart
-      });
+      this.calculateSubtotal(this.state.cart);
     } else {
       product.quantity = parseInt(quantity);
-      this.setState({
-        cart: [...this.state.cart, product]
-      });
+      this.calculateSubtotal([...this.state.cart, product]);
     }
   };
 
   removeToCart = id => {
     const newCart = this.state.cart.filter(x => x.id !== id);
+    this.calculateSubtotal(newCart);
+  };
+
+  resetCart = () => {
     this.setState({
-      cart: newCart
+      cart: [],
+      subTotal: 0,
+      total: 0
     });
   };
+
+  changeCurrency = (currency) => {
+    this.setState({
+      currency: currency
+    });
+  }
+
+  calculateSubtotal = (cart) => {
+    const shippingFee = parseFloat(this.state.shippingFee);
+    let subTotal = 0;
+    cart.forEach((product) => {
+      subTotal += parseFloat(product.quantity) * parseFloat(product.price)
+    });
+    // eslint-disable-next-line
+    const total = eval(subTotal) + eval(shippingFee);
+
+    this.setState({
+      cart: cart,
+      subTotal: parseFloat(subTotal).toFixed(2),
+      total: parseFloat(total).toFixed(2)
+    });
+  }
 
   render() {
     return (
@@ -59,7 +105,9 @@ class AppProvider extends Component {
         value={{
           ...this.state,
           addToCart: this.addToCart,
-          removeToCart: this.removeToCart
+          removeToCart: this.removeToCart,
+          resetCart: this.resetCart,
+          changeCurrency: this.changeCurrency
         }}
       >
         {this.props.children}

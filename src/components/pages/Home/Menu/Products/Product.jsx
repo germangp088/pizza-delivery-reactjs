@@ -72,6 +72,9 @@ const Product = (props) => {
                 </Typography>
               </CardContent>
               <CardActions>
+                <Typography gutterBottom variant="h5" component="h2">
+                  €{parseFloat(product.price).toFixed(2)}
+                </Typography>
                 <TextField
                   id="quantity"
                   type="number"

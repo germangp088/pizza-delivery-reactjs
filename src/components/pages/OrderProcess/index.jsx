@@ -56,12 +56,15 @@ const OrderProcess = () => {
   return (
     <AppConsumer>
       {value => {
-        const { cart, customer, changeCustomerValue } = value;
+        const { cart, customer, changeCustomerValue, postOrder, order_id, finish } = value;
 
         const getStepContent = (step) => {
           switch (step) {
             case 0:
-              return <CustomerForm customer={customer} changeCustomerValue={changeCustomerValue} />;
+              return <CustomerForm
+                      customer={customer}
+                      changeCustomerValue={changeCustomerValue}
+                    />;
             case 1:
               return <Order />;
             default:
@@ -90,11 +93,11 @@ const OrderProcess = () => {
             </Stepper>
             <div>
               {activeStep === steps.length ? (
-                <div>
-                  <Typography className={classes.instructions}>
-                    All steps completed - you&apos;re finished
-                  </Typography>
-                </div>
+                <CheckOut
+                  instructions={classes.instructions}
+                  order_id={order_id}
+                  finish={finish}
+                />
               ) : (
                 <div>
                   <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
@@ -102,14 +105,24 @@ const OrderProcess = () => {
                     <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                       Back
                     </Button>
+                    {
+                      activeStep === steps.length - 1 ? 
+                      <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => postOrder(handleNext)}
+                      className={classes.button}
+                    >
+                      Place order
+                    </Button> :
                     <Button
                       variant="contained"
                       color="primary"
                       onClick={handleNext}
                       className={classes.button}
                     >
-                      {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
-                    </Button>
+                      Next
+                    </Button>}
                   </div>
                 </div>
               )}

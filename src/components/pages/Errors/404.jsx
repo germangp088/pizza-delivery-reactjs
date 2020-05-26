@@ -44,8 +44,9 @@ const classes = useStyles();
             aria-label="home"
             href="/"
             className={classes.button}
+            startIcon={<Home />}
           >
-            <Home />
+            Home
           </Button>
         </div>
       </Paper>

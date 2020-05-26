@@ -22,7 +22,6 @@ export const getShippingFee = async () => {
 export const getCurrencies = async () => {
     try {
         const res = await superagent.get(`${URL_API}currency`);
-        console.log(res.body.currencies)
         return res.body.currencies;
     } catch(err) {
         throw err

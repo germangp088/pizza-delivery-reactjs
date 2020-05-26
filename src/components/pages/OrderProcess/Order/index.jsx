@@ -23,7 +23,7 @@ const Order = () => {
   return (
     <AppConsumer>
       {value => {
-        const { cart, removeToCart, subTotal, shippingFee, total, currencies, currency, changeCurrency } = value;
+        const { cart, removeToCart, subTotal, shipping_fee, total, currencies, currency, changeCurrency } = value;
 
         return (
             <React.Fragment>
@@ -51,7 +51,7 @@ const Order = () => {
                   <Item
                     primary="Shipping"
                     variant="subtitle1"
-                    price={`${currency.symbol}${exchange(shippingFee, currency.symbol)}`}
+                    price={`${currency.symbol}${exchange(shipping_fee, currency.symbol)}`}
                   />
                   <Item
                     primary="Total"

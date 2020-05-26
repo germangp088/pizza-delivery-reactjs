@@ -28,17 +28,6 @@ const useStyles = makeStyles((theme) => ({
 const OrderProcess = () => {
 
   const getSteps = () => ['Personal information', 'Checkout'];
-  
-  const getStepContent = (step) => {
-    switch (step) {
-      case 0:
-        return <CustomerForm />;
-      case 1:
-        return <Order />;
-      default:
-        return 'Unknown step';
-    }
-  }
 
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -67,7 +56,19 @@ const OrderProcess = () => {
   return (
     <AppConsumer>
       {value => {
-        const { cart } = value;
+        const { cart, customer, changeCustomerValue } = value;
+
+        const getStepContent = (step) => {
+          switch (step) {
+            case 0:
+              return <CustomerForm customer={customer} changeCustomerValue={changeCustomerValue} />;
+            case 1:
+              return <Order />;
+            default:
+              return 'Unknown step';
+          }
+        };
+
         return (
           <div className={classes.root}>
             {

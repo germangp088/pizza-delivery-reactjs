@@ -18,12 +18,16 @@ const useStyles = makeStyles((theme) => ({
 const Menu = (props) => {
   const classes = useStyles();
 
-  const filterProduct = (product_type) => props.products.filter(x => x.product_type === product_type);
+  const filterType = (arr, product_type) => arr.filter(x => x.product_type === product_type);
   const isEmpty = (arr) => arr.length === 0;
 
-  const pizzas = filterProduct("Pizza");
-  const desserts = filterProduct("Dessert");
-  const drinks = filterProduct("Drink");
+  const pizzas = filterType(props.products, "Pizza");
+  const desserts = filterType(props.products, "Dessert");
+  const drinks = filterType(props.products, "Drink");
+
+  const pizzasCart = filterType(props.cart, "Pizza");
+  const dessertsCart = filterType(props.cart, "Dessert");
+  const drinksCart = filterType(props.cart, "Drink");
 
   return (
     <React.Fragment>
@@ -35,19 +39,19 @@ const Menu = (props) => {
         }
         {
           pizzas.length > 0 && 
-          <Products productType="Pizzas" products={pizzas}>
+          <Products productType="Pizzas" products={pizzas} cart={pizzasCart}>
             <LocalPizzaIcon />
           </Products>
         }
         {
           desserts.length > 0 && 
-          <Products productType="Desserts" products={desserts}>
+          <Products productType="Desserts" products={desserts} cart={dessertsCart}>
             <CakeIcon />
           </Products>
         }
         {
           drinks.length > 0 && 
-          <Products productType="Drinks" products={drinks}>
+          <Products productType="Drinks" products={drinks} cart={drinksCart}>
             <LocalDrinkIcon />
           </Products>
         }

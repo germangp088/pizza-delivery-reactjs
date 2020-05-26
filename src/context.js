@@ -46,12 +46,20 @@ class AppProvider extends Component {
     }
   };
 
+  removeToCart = id => {
+    const newCart = this.state.cart.filter(x => x.id !== id);
+    this.setState({
+      cart: newCart
+    });
+  };
+
   render() {
     return (
       <AppContext.Provider
         value={{
           ...this.state,
-          addToCart: this.addToCart
+          addToCart: this.addToCart,
+          removeToCart: this.removeToCart
         }}
       >
         {this.props.children}

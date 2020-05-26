@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.secondary.main,
     },
   },
+  order: {
+    width: '100%'
+  },
   root: {
     display: 'flex',
     flexDirection: 'column',

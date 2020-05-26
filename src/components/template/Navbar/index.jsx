@@ -4,7 +4,7 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import HomeIcon from '@material-ui/icons/Home';
 import RestoreIcon from '@material-ui/icons/Restore';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import Cart from "./Cart";
 
 const Navbar = (props) => {
     const [value, setValue] = React.useState(0);
@@ -38,11 +38,7 @@ const Navbar = (props) => {
           icon={<RestoreIcon />}
           classes={{ selected: props.classes.selected }}
           className={props.classes.navitem} />
-        <BottomNavigationAction
-          label="Cart"
-          icon={<ShoppingCartIcon />}
-          classes={{ selected: props.classes.selected }}
-          className={props.classes.navitem} />
+        <Cart classes={props.classes} />
       </BottomNavigation>
     );
 }

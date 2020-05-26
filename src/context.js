@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getProducts, getShippingFee, getCurrencies } from "./request";
+import { getProducts, getShippingFee, getCurrencies, getIP } from "./request";
 
 const AppContext = React.createContext();
 
@@ -16,7 +16,8 @@ class AppProvider extends Component {
       name: '',
       email: '',
       contact_number: '',
-      delivery_address: ''
+      delivery_address: '',
+      ip: ''
     },
     errorMessage: ''
   };
@@ -30,6 +31,7 @@ class AppProvider extends Component {
       await this.getProducts();
       await this.getShippingFee();
       await this.getCurrencies();
+      await this.getIP();
     } catch (error) {
       this.setState({
         errorMessage: error.message
@@ -57,6 +59,11 @@ class AppProvider extends Component {
       currency: currencies.find(x => x.currency === "Euro"),
       currencies: currencies
     });
+  }
+
+  getIP = async() => {
+    const ip = await getIP();
+    this.changeCustomerValue("ip", ip);
   }
 
   addToCart = (product, quantity) => {
@@ -111,7 +118,6 @@ class AppProvider extends Component {
     this.setState({
       customer: customer
     });
-    console.log(this.state.customer);
   }
 
   render() {

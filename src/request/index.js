@@ -27,3 +27,12 @@ export const getCurrencies = async () => {
         throw err
     }
 }
+
+export const getIP = async () => {
+    try {
+        const res = await superagent.get('https://api.ipify.org?format=text');
+        return res.text;
+    } catch(err) {
+        throw err
+    }
+}

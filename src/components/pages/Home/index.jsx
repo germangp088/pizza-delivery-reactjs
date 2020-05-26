@@ -1,8 +1,7 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
 import { getProducts } from "../../../request";
 import { FormHelperText } from '@material-ui/core';
+import Menu from './Menu/Menu';
 
 class Home extends React.PureComponent {
   constructor(props) {
@@ -35,12 +34,10 @@ class Home extends React.PureComponent {
   render() {
     return (
       <React.Fragment>
-          <Box my={4}>
-            <Typography variant="h4" component="h1" gutterBottom>
-              Welcome to Formaggio piccante, enjoy our <strong>MOLTO BENE</strong> products
-            </Typography>
-          </Box>
+        <main>
           <FormHelperText error={true}>{this.state.errorMessage}</FormHelperText>
+          <Menu products={this.state.products} />
+        </main>
       </React.Fragment>
       );
   }

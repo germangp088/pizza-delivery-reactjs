@@ -6,6 +6,7 @@ import List from '@material-ui/core/List';
 import Product from './Product';
 import Item from './Item';
 import Currency from './Currency';
+import exchange from './exchange';
 
 const useStyles = makeStyles((theme) => ({
   total: {
@@ -45,18 +46,18 @@ const Order = () => {
                   <Item
                     primary="Sub Total"
                     variant="subtitle1"
-                    price={`${currency.symbol}${subTotal}`}
+                    price={`${currency.symbol}${exchange(subTotal, currency.symbol)}`}
                   />
                   <Item
                     primary="Shipping"
                     variant="subtitle1"
-                    price={`${currency.symbol}${shippingFee}`}
+                    price={`${currency.symbol}${exchange(shippingFee, currency.symbol)}`}
                   />
                   <Item
                     primary="Total"
                     variant="subtitle1"
                     className={classes.total}
-                    price={`${currency.symbol}${total}`}
+                    price={`${currency.symbol}${exchange(total, currency.symbol)}`}
                   />
                 </List>
             </React.Fragment>

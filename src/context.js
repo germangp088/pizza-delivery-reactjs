@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getProducts, getShippingFee, getCurrencies, getIP } from "./request";
+import { getProducts, getShippingFee, getCurrencies, getIP, postOrder } from "./request";
 
 const AppContext = React.createContext();
 
@@ -19,6 +19,7 @@ class AppProvider extends Component {
       delivery_address: '',
       ip: ''
     },
+    order_id: 0,
     errorMessage: ''
   };
 
@@ -82,14 +83,6 @@ class AppProvider extends Component {
     this.calculateSubtotal(newCart);
   };
 
-  resetCart = () => {
-    this.setState({
-      cart: [],
-      subTotal: 0,
-      total: 0
-    });
-  };
-
   changeCurrency = (currency) => {
     this.setState({
       currency: currency
@@ -120,6 +113,55 @@ class AppProvider extends Component {
     });
   }
 
+  finish = () => {
+    this.setState({
+      cart: [],
+      subTotal: 0,
+      total: 0,
+      currency: this.state.currencies.find(x => x.currency === "Euro"),
+      customer: {
+        name: '',
+        email: '',
+        contact_number: '',
+        delivery_address: '',
+        ip: this.state.customer.ip
+      },
+      order_id: 0
+    });
+  }
+
+  postOrder = async(callback) => {
+    const order = {
+      customer: {
+        ...this.state.customer
+      },
+      bill: {
+        id_currency: this.state.currency.id,
+        subtotal: this.state.subTotal,
+        shipping_fee: this.state.shipping_fee
+      },
+      products: this.state.cart.map((product) => {
+        return {
+          id_product: product.id,
+          price: product.price,
+          quantity: product.quantity
+        }
+      })
+    };
+    
+    try {
+      const order_id = await postOrder(order);
+      this.setState({
+        order_id: order_id
+      });
+      callback();
+    } catch (error) {
+      this.setState({
+        errorMessage: error.message
+      });
+    }
+  }
+
   render() {
     return (
       <AppContext.Provider
@@ -127,9 +169,10 @@ class AppProvider extends Component {
           ...this.state,
           addToCart: this.addToCart,
           removeToCart: this.removeToCart,
-          resetCart: this.resetCart,
+          finish: this.finish,
           changeCurrency: this.changeCurrency,
-          changeCustomerValue: this.changeCustomerValue
+          changeCustomerValue: this.changeCustomerValue,
+          postOrder: this.postOrder
         }}
       >
         {this.props.children}

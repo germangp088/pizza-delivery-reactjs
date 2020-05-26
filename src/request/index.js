@@ -36,3 +36,12 @@ export const getIP = async () => {
         throw err
     }
 }
+
+export const postOrder = async (order) => {
+    try {
+        const res = await superagent.post(`${URL_API}order`).send(order);
+        return res.body.id;
+    } catch(err) {
+        throw err;
+    }
+}

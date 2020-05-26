@@ -1,5 +1,4 @@
 import React from 'react';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
@@ -9,6 +8,8 @@ import Popper from '@material-ui/core/Popper';
 import CartMenuItem from './CartMenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
+import Badge from '@material-ui/core/Badge';
 
 const Cart = (props) => {
     const [open, setOpen] = React.useState(false);
@@ -32,16 +33,19 @@ const Cart = (props) => {
             const { cart, removeToCart } = value;
             return (
                 <React.Fragment>
-                    <BottomNavigationAction
-                        label="Cart"
-                        icon={<ShoppingCartIcon />}
-                        classes={{ selected: props.classes.selected }}
-                        className={props.classes.navitem} 
-                        ref={anchorRef}
-                        aria-controls={open ? 'menu-list-grow' : undefined}
-                        aria-haspopup="true"
-                        onClick={handleToggle}
-                    />
+                      <Button
+                          classes={{ selected: props.classes.selected }}
+                          className={props.classes.navitem} 
+                          ref={anchorRef}
+                          aria-controls={open ? 'menu-list-grow' : undefined}
+                          aria-haspopup="true"
+                          onClick={handleToggle}
+                      >
+                        <Badge badgeContent={cart.length} color="secondary">
+                          <ShoppingCartIcon />
+                        </Badge>
+                      </Button>
+                    
                     <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
                         {({ TransitionProps, placement }) => (
                         <Grow
@@ -52,18 +56,21 @@ const Cart = (props) => {
                             <ClickAwayListener onClickAway={handleClose}>
                               <React.Fragment>
                                 <MenuList autoFocusItem={open} id="menu-list-grow">
-                                {cart.map((product) => (
-                                    <CartMenuItem key={`Cart_${product.id}`} product={product} removeToCart={removeToCart} />
-                                ))}
+                                  {cart.map((product) => (
+                                      <CartMenuItem key={`Cart_${product.id}`} product={product} removeToCart={removeToCart} />
+                                  ))}
                                 </MenuList>
                                 {
                                   cart.length > 0 &&
-                                  <Button
-                                    variant="contained"
-                                    color="primary" 
-                                    className={props.classes.order} >
-                                    Order
-                                  </Button>
+                                  <Link  to={{pathname : "/orderProcess"}}>
+                                    <Button
+                                      onClick={handleClose}
+                                      variant="contained"
+                                      color="primary" 
+                                      className={props.classes.order} >
+                                      Order
+                                    </Button>
+                                  </Link>
                                 }
                               </React.Fragment>
                             </ClickAwayListener>

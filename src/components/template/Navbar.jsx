@@ -25,6 +25,8 @@ const Navbar = (props) => {
             case 2:
               props.history.push('/history');
               break;
+            default:
+              break;
           }
         }}
         showLabels

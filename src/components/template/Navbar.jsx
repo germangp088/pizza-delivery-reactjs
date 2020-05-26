@@ -46,7 +46,7 @@ const Navbar = (props) => {
           classes={{ selected: props.classes.selected }}
           className={props.classes.navitem} />
         <BottomNavigationAction
-          label="Ship"
+          label="Cart"
           icon={<ShoppingCartIcon />}
           classes={{ selected: props.classes.selected }}
           className={props.classes.navitem} />

@@ -44,7 +44,7 @@ const MainLayout = (props) => {
   return (
       <div className={classes.root}>
         <Header classes={classes} />
-        <Container component="main" className={classes.main} maxWidth="sm">
+        <Container component="main" className={classes.main} maxWidth="lg">
           {children}
         </Container>
         <Footer classes={classes} />

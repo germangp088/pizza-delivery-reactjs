@@ -4,7 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Phone from './Phone';
 
-const CustomerForm = () => {
+const CustomerForm = (props) => {
+  const { name, email, delivery_address, contact_number } = props.customer;
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -18,10 +19,11 @@ const CustomerForm = () => {
             name="name"
             label="Full name"
             fullWidth
-            autoComplete="given-name"
+            defaultValue={name}
+            onBlur={(e)=> props.changeCustomerValue("name", e.target.value)}
           />
         </Grid>
-        <Phone />
+        <Phone changeCustomerValue={props.changeCustomerValue} contact_number={contact_number}/>
         <Grid item xs={12}>
           <TextField
             margin="normal"
@@ -30,7 +32,8 @@ const CustomerForm = () => {
             id="email"
             label="Email Address"
             name="email"
-            autoComplete="email"
+            defaultValue={email}
+            onBlur={(e)=> props.changeCustomerValue("email", e.target.value)}
           />
         </Grid>
         <Grid item xs={12}>
@@ -40,7 +43,8 @@ const CustomerForm = () => {
             name="address1"
             label="Address line"
             fullWidth
-            autoComplete="shipping address-line1"
+            defaultValue={delivery_address}
+            onBlur={(e)=> props.changeCustomerValue("delivery_address", e.target.value)}
           />
         </Grid>
       </Grid>

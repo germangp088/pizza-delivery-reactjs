@@ -5,42 +5,36 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-
-const Phone = () => {
   
-  const TextMaskCustom = (props) => {
-    const { inputRef, ...other } = props;
+function TextMaskCustom(props) {
+  const { inputRef, ...other } = props;
 
-    return (
-      <MaskedInput
-        {...other}
-        ref={(ref) => {
-          inputRef(ref ? ref.inputElement : null);
-        }}
-        mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
-        placeholderChar={'\u2000'}
-        showMask
-      />
-    );
-  }
+  return (
+    <MaskedInput
+      {...other}
+      ref={(ref) => {
+        inputRef(ref ? ref.inputElement : null);
+      }}
+      mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+      placeholderChar={'\u2000'}
+      showMask
+    />
+  );
+}
 
-  TextMaskCustom.propTypes = {
-    inputRef: PropTypes.func.isRequired,
-  };
+TextMaskCustom.propTypes = {
+  inputRef: PropTypes.func.isRequired,
+};
 
-  const [values] = React.useState({
-    textmask: '(1  )    -    ',
-    numberformat: '1320',
-  });
-
+const Phone = (props) => {
   return (
     <Grid item xs={12} sm={6}>
       <FormControl>
         <InputLabel htmlFor="formatted-text-mask-input">Phone</InputLabel>
         <Input
           required
-          value={values.textmask}
-          //onChange={handleChange}
+          defaultValue={props.contact_number}
+          onBlur={(e)=> props.changeCustomerValue("contact_number", e.target.value)}
           name="textmask"
           id="formatted-text-mask-input"
           inputComponent={TextMaskCustom}

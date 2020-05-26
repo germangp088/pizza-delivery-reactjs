@@ -10,8 +10,14 @@ class AppProvider extends Component {
     currencies: [],
     currency: {},
     subTotal: 0,
-    shippingFee: 0,
+    shipping_fee: 0,
     total: 0,
+    customer: {
+      name: '',
+      email: '',
+      contact_number: '',
+      delivery_address: ''
+    },
     errorMessage: ''
   };
 
@@ -39,9 +45,9 @@ class AppProvider extends Component {
   }
 
   getShippingFee = async() => {
-    const shippingFee = await getShippingFee();
+    const shipping_fee = await getShippingFee();
     this.setState({
-      shippingFee: shippingFee
+      shipping_fee: shipping_fee
     });
   }
 
@@ -84,19 +90,28 @@ class AppProvider extends Component {
   }
 
   calculateSubtotal = (cart) => {
-    const shippingFee = parseFloat(this.state.shippingFee);
+    const shipping_fee = parseFloat(this.state.shipping_fee);
     let subTotal = 0;
     cart.forEach((product) => {
       subTotal += parseFloat(product.quantity) * parseFloat(product.price)
     });
     // eslint-disable-next-line
-    const total = eval(subTotal) + eval(shippingFee);
+    const total = eval(subTotal) + eval(shipping_fee);
 
     this.setState({
       cart: cart,
       subTotal: parseFloat(subTotal).toFixed(2),
       total: parseFloat(total).toFixed(2)
     });
+  }
+
+  changeCustomerValue = (prop, value) => {
+    let customer = this.state.customer;
+    customer[prop] = value;
+    this.setState({
+      customer: customer
+    });
+    console.log(this.state.customer);
   }
 
   render() {
@@ -107,7 +122,8 @@ class AppProvider extends Component {
           addToCart: this.addToCart,
           removeToCart: this.removeToCart,
           resetCart: this.resetCart,
-          changeCurrency: this.changeCurrency
+          changeCurrency: this.changeCurrency,
+          changeCustomerValue: this.changeCustomerValue
         }}
       >
         {this.props.children}

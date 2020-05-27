@@ -30,12 +30,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const OrderProcess = () => {
 
   const getSteps = () => ['Personal information', 'Checkout'];
 
   const classes = useStyles();
+
+  const [values, setValues] = React.useState({
+    nameError: false,
+    emailError: false,
+    phoneError: false,
+    addressError: false
+  });
+
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const steps = getSteps();
@@ -70,8 +77,13 @@ const OrderProcess = () => {
               return <CustomerForm
                       customer={customer}
                       changeCustomerValue={changeCustomerValue}
+                      values={values}
+                      setValues={setValues}
                     />;
             case 1:
+              if(customer.name === "" || customer.email === "" || customer.contact_number === "" || customer.delivery_address === "") {
+                handleBack();
+              }
               return <Order />;
             default:
               return 'Unknown step';

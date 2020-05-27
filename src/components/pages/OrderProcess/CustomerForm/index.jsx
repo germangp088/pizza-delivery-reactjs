@@ -5,6 +5,20 @@ import Typography from '@material-ui/core/Typography';
 import Phone from './Phone';
 
 const CustomerForm = (props) => {
+
+  const { values } = props;
+
+  const onBlur = (e, eAttr, attr) =>{
+    console.log(e.target.value)
+    if(!e.target.value){
+      console.log(e.target.value)
+      props.setValues({ [eAttr]: true });
+    } else {
+      props.setValues({ [eAttr]: false });
+      props.changeCustomerValue(attr, e.target.value)
+    }
+  }
+
   const { name, email, delivery_address, contact_number } = props.customer;
   return (
     <React.Fragment>
@@ -20,10 +34,17 @@ const CustomerForm = (props) => {
             label="Full name"
             fullWidth
             defaultValue={name}
-            onBlur={(e)=> props.changeCustomerValue("name", e.target.value)}
+            error={values.nameError}
+            helperText={values.nameError && "Name is required."}
+            onBlur={(e) => onBlur(e, "nameError", "name")}
           />
         </Grid>
-        <Phone changeCustomerValue={props.changeCustomerValue} contact_number={contact_number}/>
+        <Phone
+          changeCustomerValue={props.changeCustomerValue}
+          contact_number={contact_number}
+          values={values}
+          setValues={props.setValues}
+        />
         <Grid item xs={12}>
           <TextField
             margin="normal"
@@ -33,7 +54,9 @@ const CustomerForm = (props) => {
             label="Email"
             name="email"
             defaultValue={email}
-            onBlur={(e)=> props.changeCustomerValue("email", e.target.value)}
+            error={values.emailError}
+            helperText={values.emailError && "Email is required."}
+            onBlur={(e) => onBlur(e, "emailError", "email")}
           />
         </Grid>
         <Grid item xs={12}>
@@ -44,7 +67,9 @@ const CustomerForm = (props) => {
             label="Address line"
             fullWidth
             defaultValue={delivery_address}
-            onBlur={(e)=> props.changeCustomerValue("delivery_address", e.target.value)}
+            error={values.addressError}
+            helperText={values.addressError && "Address is required."}
+            onBlur={(e) => onBlur(e, "addressError", "delivery_address")}
           />
         </Grid>
       </Grid>

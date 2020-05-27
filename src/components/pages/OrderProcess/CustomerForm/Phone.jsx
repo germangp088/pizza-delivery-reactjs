@@ -27,6 +27,18 @@ TextMaskCustom.propTypes = {
 };
 
 const Phone = (props) => {
+
+  const onBlur = (e, eAttr, attr) =>{
+    console.log(e.target.value)
+    if(e.target.value === '(   )    -    '){
+      console.log(e.target.value)
+      props.setValues({ [eAttr]: true });
+    } else {
+      props.setValues({ [eAttr]: false });
+      props.changeCustomerValue(attr, e.target.value)
+    }
+  }
+
   return (
     <Grid item xs={12} sm={6}>
       <FormControl>
@@ -34,7 +46,9 @@ const Phone = (props) => {
         <Input
           required
           defaultValue={props.contact_number}
-          onBlur={(e)=> props.changeCustomerValue("contact_number", e.target.value)}
+          error={props.values.phoneError}
+          helperText={props.values.phoneError && "Phone is required."}
+          onBlur={(e)=> onBlur(e, "phoneError", "contact_number")}
           name="textmask"
           id="formatted-text-mask-input"
           inputComponent={TextMaskCustom}

@@ -4,9 +4,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import Product from './Product';
-import Item from './Item';
+import Item from '../../../common/Item';
 import Currency from './Currency';
-import exchange from './exchange';
+import exchange from '../../../common/exchange';
 
 const useStyles = makeStyles((theme) => ({
   total: {

@@ -10,6 +10,8 @@ import Order from './Order';
 import CustomerForm from './CustomerForm';
 import { AppConsumer } from "../../../context";
 import { Redirect } from 'react-router-dom';
+import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
   instructions: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
+  },
+  paper: {
+    padding: theme.spacing(3, 3, 3, 3),
+    marginTop: theme.spacing(3),
   },
 }));
 
@@ -91,42 +97,46 @@ const OrderProcess = () => {
                 );
               })}
             </Stepper>
-            <div>
-              {activeStep === steps.length ? (
-                <CheckOut
-                  instructions={classes.instructions}
-                  order_id={order_id}
-                  finish={finish}
-                />
-              ) : (
-                <div>
-                  <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+            <Container className={classes.cardGrid} maxWidth="md">
+              <Paper 
+                elevation={3} 
+                className={classes.paper}>
+                {activeStep === steps.length ? (
+                  <CheckOut
+                    instructions={classes.instructions}
+                    order_id={order_id}
+                    finish={finish}
+                  />
+                ) : (
                   <div>
-                    <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                      Back
-                    </Button>
-                    {
-                      activeStep === steps.length - 1 ? 
+                    <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+                    <div>
+                      <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                        Back
+                      </Button>
+                      {
+                        activeStep === steps.length - 1 ? 
+                        <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => postOrder(handleNext)}
+                        className={classes.button}
+                      >
+                        Place order
+                      </Button> :
                       <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => postOrder(handleNext)}
-                      className={classes.button}
-                    >
-                      Place order
-                    </Button> :
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleNext}
-                      className={classes.button}
-                    >
-                      Next
-                    </Button>}
+                        variant="contained"
+                        color="primary"
+                        onClick={handleNext}
+                        className={classes.button}
+                      >
+                        Next
+                      </Button>}
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </Paper>
+            </Container>
           </div>
         );
       }}

@@ -51,7 +51,7 @@ export const getIP = async () => {
 export const postOrder = async (order) => {
     try {
         const res = await superagent.post(`${URL_API}order`).send(order);
-        return res.body.id;
+        return res.body;
     } catch(err) {
         throw err;
     }

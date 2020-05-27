@@ -151,6 +151,7 @@ class AppProvider extends Component {
     
     try {
       const order_id = await postOrder(order);
+      console.log({order_id})
       this.setState({
         order_id: order_id
       });

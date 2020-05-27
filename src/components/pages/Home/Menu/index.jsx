@@ -40,19 +40,19 @@ const Menu = (props) => {
         {
           pizzas.length > 0 && 
           <Products productType="Pizzas" products={pizzas} cart={pizzasCart}>
-            <LocalPizzaIcon />
+            <LocalPizzaIcon fontSize="large"/>
           </Products>
         }
         {
           desserts.length > 0 && 
           <Products productType="Desserts" products={desserts} cart={dessertsCart}>
-            <CakeIcon />
+            <CakeIcon fontSize="large"/>
           </Products>
         }
         {
           drinks.length > 0 && 
           <Products productType="Drinks" products={drinks} cart={drinksCart}>
-            <LocalDrinkIcon />
+            <LocalDrinkIcon fontSize="large"/>
           </Products>
         }
       </Container>

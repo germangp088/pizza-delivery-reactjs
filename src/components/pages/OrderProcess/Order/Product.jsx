@@ -1,21 +1,16 @@
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import RemoveShoppingCartIcon from '@material-ui/icons/RemoveShoppingCart';
-import Item from './Item';
-import exchange from './exchange';
+import Product from '../../../common/Product';
 
-const Product = (props) => {
+const ProductOrder = (props) => {
     const { product, removeToCart, symbol } = props;
     return (
         <React.Fragment>
-            <Item
-                primary={product.name}
-                secondary={product.description}
-                price={`${props.symbol}${exchange((parseFloat(product.quantity) * parseFloat(product.price)), symbol)}`}
-                variant="body2"
+            <Product
+                product={product}
+                symbol={symbol}
             >
-                <Typography><strong>Qty</strong>: {product.quantity}</Typography>
                 <IconButton
                     color="primary"
                     aria-label="remove to shopping cart"
@@ -24,9 +19,9 @@ const Product = (props) => {
                     }}>
                     <RemoveShoppingCartIcon />
                 </IconButton>
-            </Item>
+            </Product>
         </React.Fragment>
     );
 }
 
-export default Product;
+export default ProductOrder;

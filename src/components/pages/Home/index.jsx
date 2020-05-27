@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormHelperText } from '@material-ui/core';
-import Menu from './Menu/Menu';
+import Menu from './Menu';
 import { AppConsumer } from "../../../context";
 
 const Home = () => {

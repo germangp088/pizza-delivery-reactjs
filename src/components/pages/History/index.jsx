@@ -50,6 +50,12 @@ class History extends React.Component {
                 History orders
               </Typography>
               {
+                (this.state.history && this.state.history.length === 0) &&
+                <Typography variant="h6" align="center" gutterBottom>
+                  Loading...
+                </Typography>
+              }
+              {
                 this.state.history &&
                 this.state.history.map((product) => {
                   const procesed = orderProcessed.some(x => product.id_order === x);

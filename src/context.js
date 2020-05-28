@@ -113,6 +113,12 @@ class AppProvider extends Component {
     });
   }
 
+  cleanErrorMessage = () => {
+    this.setState({
+      errorMessage: ''
+    });
+  }
+
   finish = () => {
     this.setState({
       cart: [],
@@ -165,7 +171,8 @@ class AppProvider extends Component {
           finish: this.finish,
           changeCurrency: this.changeCurrency,
           changeCustomerValue: this.changeCustomerValue,
-          postOrder: this.postOrder
+          postOrder: this.postOrder,
+          cleanErrorMessage: this.cleanErrorMessage
         }}
       >
         {this.props.children}

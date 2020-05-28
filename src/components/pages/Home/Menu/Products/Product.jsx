@@ -44,6 +44,10 @@ const Product = (props) => {
       setValues({ quantity: 1 });
       return;
     }
+    if(parseFloat(e.target.value) > 10){
+      setValues({ quantity: 10 });
+      return;
+    }
     setValues({ quantity: parseInt(e.target.value) });
   }
 
@@ -79,7 +83,7 @@ const Product = (props) => {
                   id="quantity"
                   type="number"
                   className={classes.root}
-                  InputProps={{ inputProps: { min: 1 } }}
+                  InputProps={{ inputProps: { min: 1, max: 10 } }}
                   value={values.quantity}
                   onChange={onChange}
                 />

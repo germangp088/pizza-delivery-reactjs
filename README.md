@@ -1,25 +1,22 @@
-# Create React App example
+# pizza-delivery-reactjs
+Front-end service built on reactjs for pizza-delivery project.
 
-## How to use
+### Gitflow
+Tasks where posted on [Github](https://github.com/germangp088/pizza-delivery-reactjs/projects/1) kanban, you can follow [Github](https://github.com/germangp088/pizza-delivery-reactjs) closed branches you can inspect gitflow to know how development lifecycle where going.
 
-Download the example [or clone the repo](https://github.com/mui-org/material-ui):
-
-```sh
-curl https://codeload.github.com/mui-org/material-ui/tar.gz/master | tar -xz --strip=2 material-ui-master/examples/create-react-app
-cd create-react-app
-```
-
-Install it and run:
+### Installation
 
 ```sh
-npm install
-npm start
+$ npm install
 ```
 
-or:
+### Run
 
-[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/mui-org/material-ui/tree/master/examples/create-react-app)
+```sh
+$ npm run start
+```
 
-## The idea behind the example
-
-This example demonstrates how you can use [Create React App](https://github.com/facebookincubator/create-react-app).
+### Tests
+```sh
+$ npm run test
+```

@@ -32,10 +32,10 @@ class AppProvider extends Component {
     try {
       this.changeLoading(true);
       await this.getProducts();
+      this.changeLoading(false);
       await this.getShippingFee();
       await this.getCurrencies();
       await this.getIP();
-      this.changeLoading(false);
     } catch (error) {
       this.setState({
         errorMessage: error.message

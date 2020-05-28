@@ -1,19 +1,16 @@
 import React from 'react';
-import App from './App';
+import NotFound from './404';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { AppProvider } from "./context";
 
 test('render elements', () => {
 
   const { getByText } = render(
-    <AppProvider>
-      <App />
-    </AppProvider>
+    <NotFound />
   );
 
-  const element = getByText(/BENE/i);
-  const bene = getByText(/BENE/i);
+  const element = getByText(/404/i);
+  const homeElement = getByText(/Home/i);
   expect(element).toBeInTheDocument();
-  expect(bene).toBeInTheDocument();
+  expect(homeElement).toBeInTheDocument();
 });

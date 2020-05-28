@@ -153,9 +153,6 @@ class AppProvider extends Component {
     };
     
     try {
-      this.setState({
-        loading: true
-      });
       this.changeLoading(true);
       const order_id = await postOrder(order);
       this.setState({
@@ -188,7 +185,8 @@ class AppProvider extends Component {
           changeCurrency: this.changeCurrency,
           changeCustomerValue: this.changeCustomerValue,
           postOrder: this.postOrder,
-          cleanErrorMessage: this.cleanErrorMessage
+          cleanErrorMessage: this.cleanErrorMessage,
+          changeLoading: this.changeLoading
         }}
       >
         {this.props.children}

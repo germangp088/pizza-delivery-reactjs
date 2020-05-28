@@ -12,6 +12,7 @@ import { AppConsumer } from "../../../context";
 import { Redirect } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
+import { FormHelperText } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,8 +73,7 @@ const OrderProcess = () => {
     if(isEmpty(str)){
       return false;
     }
-    const phoneRe = /^[(]?[0-9]{3}[)]?[0-9]{3}[-]?[0-9]{4,6}$/im
-    if(!str.match(phoneRe)) {
+    if(!/^[(]?[0-9]{3}[)]? [0-9]{3}[-]?[0-9]{4}$/im.test(str)) {
       return false;
     }
     return true;
@@ -87,7 +87,7 @@ const OrderProcess = () => {
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
       return false;
     }
-    return false;
+    return true;
   }
 
   const validateOnBlur = (value, field, callback) => {
@@ -115,7 +115,7 @@ const OrderProcess = () => {
   return (
     <AppConsumer>
       {value => {
-        const { cart, customer, changeCustomerValue, postOrder, order_id, finish } = value;
+        const { cart, customer, changeCustomerValue, postOrder, order_id, finish, errorMessage } = value;
 
         const getStepContent = (step) => {
           switch (step) {
@@ -182,15 +182,18 @@ const OrderProcess = () => {
                         Back
                       </Button>
                       {
-                        activeStep === steps.length - 1 ? 
-                        <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => postOrder(handleNext)}
-                        className={classes.button}
-                      >
-                        Place order
-                      </Button> :
+                        activeStep === steps.length - 1 ?
+                        <React.Fragment>
+                          <FormHelperText error={true}>{ errorMessage && 'There was an error trying to place order.'}</FormHelperText>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => postOrder(handleNext)}
+                            className={classes.button}
+                          >
+                            Place order
+                          </Button> 
+                        </React.Fragment> :
                       <Button
                         variant="contained"
                         color="primary"

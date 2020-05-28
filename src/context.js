@@ -20,7 +20,8 @@ class AppProvider extends Component {
       ip: ''
     },
     order_id: 0,
-    errorMessage: ''
+    errorMessage: '',
+    loading: true
   };
 
   async componentDidMount() {
@@ -29,14 +30,17 @@ class AppProvider extends Component {
 
   getData = async() => {
     try {
+      this.changeLoading(true);
       await this.getProducts();
       await this.getShippingFee();
       await this.getCurrencies();
       await this.getIP();
+      this.changeLoading(false);
     } catch (error) {
       this.setState({
         errorMessage: error.message
       });
+      this.changeLoading(false);
     }
   }
 
@@ -149,16 +153,28 @@ class AppProvider extends Component {
     };
     
     try {
+      this.setState({
+        loading: true
+      });
+      this.changeLoading(true);
       const order_id = await postOrder(order);
       this.setState({
         order_id: order_id
       });
+      this.changeLoading(false);
       callback();
     } catch (error) {
       this.setState({
         errorMessage: error.message
       });
+      this.changeLoading(false);
     }
+  }
+
+  changeLoading(loading){
+    this.setState({
+      loading: loading
+    });
   }
 
   render() {

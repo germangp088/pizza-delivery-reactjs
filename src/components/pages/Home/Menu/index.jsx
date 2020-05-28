@@ -4,7 +4,6 @@ import Container from '@material-ui/core/Container';
 import LocalPizzaIcon from '@material-ui/icons/LocalPizza';
 import CakeIcon from '@material-ui/icons/Cake';
 import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
-import { FormHelperText } from '@material-ui/core';
 import Hero from './Hero';
 import Products from './Products';
 
@@ -19,7 +18,6 @@ const Menu = (props) => {
   const classes = useStyles();
 
   const filterType = (arr, product_type) => arr.filter(x => x.product_type === product_type);
-  const isEmpty = (arr) => arr.length === 0;
 
   const pizzas = filterType(props.products, "Pizza");
   const desserts = filterType(props.products, "Dessert");
@@ -33,10 +31,6 @@ const Menu = (props) => {
     <React.Fragment>
       <Hero />
       <Container className={classes.cardGrid} maxWidth="md">
-        {
-          (isEmpty(pizzas) && isEmpty(desserts) && isEmpty(drinks)) &&
-          <FormHelperText>Loading...</FormHelperText>
-        }
         {
           pizzas.length > 0 && 
           <Products productType="Pizzas" products={pizzas} cart={pizzasCart}>

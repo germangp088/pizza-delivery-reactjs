@@ -48,12 +48,6 @@ class History extends React.Component {
                 History orders
               </Typography>
               {
-                (!this.state.history) &&
-                <Typography variant="h6" align="center" gutterBottom>
-                  Loading...
-                </Typography>
-              }
-              {
                 (this.state.history && this.state.history.length === 0) &&
                 <Typography variant="h6" align="center" gutterBottom>
                   You don't have any order yet.

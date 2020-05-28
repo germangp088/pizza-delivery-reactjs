@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
 const CheckOut = (props) => {
   const classes = useStyles();
 
-
   return (
     <React.Fragment>
       <div>

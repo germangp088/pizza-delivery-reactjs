@@ -66,6 +66,23 @@ const OrderProcess = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  const isEmpty = (str) => str === ""
+  
+  const validPhone = (str) => {
+    if(isEmpty(str)){
+      return false;
+    }
+    const phoneRe = /^[(]?[0-9]{3}[)]?[0-9]{3}[-]?[0-9]{4,6}$/im
+    if(!str.match(phoneRe)) {
+      return false;
+    }
+    return true;
+  }
+
+  const setError = (eAttr, value) => {
+    values[eAttr] = value;
+  }
+
   return (
     <AppConsumer>
       {value => {
@@ -79,9 +96,17 @@ const OrderProcess = () => {
                       changeCustomerValue={changeCustomerValue}
                       values={values}
                       setValues={setValues}
+                      setError={setError}
                     />;
             case 1:
-              if(customer.name === "" || customer.email === "" || customer.contact_number === "" || customer.delivery_address === "") {
+              if(isEmpty(customer.name) || isEmpty(customer.email) || 
+                !validPhone(customer.contact_number) || isEmpty(customer.delivery_address)) {
+                setValues({
+                  nameError: isEmpty(customer.name),
+                  emailError: isEmpty(customer.email),
+                  phoneError: !validPhone(customer.contact_number),
+                  addressError: isEmpty(customer.delivery_address)
+                });
                 handleBack();
               }
               return <Order />;

@@ -30,8 +30,6 @@ export const getCurrencies = async () => {
 
 export const getHistory = async (ip) => {
     try {
-        console.log(ip)
-        console.log(`${URL_API}order/history/${ip}`)
         const res = await superagent.get(`${URL_API}order/history/${ip}`);
         return res.body;
     } catch(err) {

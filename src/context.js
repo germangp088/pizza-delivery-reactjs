@@ -119,13 +119,6 @@ class AppProvider extends Component {
       subTotal: 0,
       total: 0,
       currency: this.state.currencies.find(x => x.currency === "Euro"),
-      customer: {
-        name: '',
-        email: '',
-        contact_number: '',
-        delivery_address: '',
-        ip: this.state.customer.ip
-      },
       order_id: 0
     });
   }
@@ -151,7 +144,6 @@ class AppProvider extends Component {
     
     try {
       const order_id = await postOrder(order);
-      console.log({order_id})
       this.setState({
         order_id: order_id
       });

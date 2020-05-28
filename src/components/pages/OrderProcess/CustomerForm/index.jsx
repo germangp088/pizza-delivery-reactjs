@@ -8,16 +8,16 @@ const CustomerForm = (props) => {
 
   const { values } = props;
 
-  const onBlur = (e, eAttr, attr) =>{
-    console.log(e.target.value)
-    if(!e.target.value){
-      console.log(e.target.value)
-      props.setValues({ [eAttr]: true });
+  const onChange = (e, eAttr, attr, validation = "") =>{
+    if(!e.target.value || e.target.value === validation){
+      props.setError(eAttr, true);
+      props.changeCustomerValue(attr, e.target.value)
     } else {
-      props.setValues({ [eAttr]: false });
+      props.setError(eAttr, false);
       props.changeCustomerValue(attr, e.target.value)
     }
   }
+
 
   const { name, email, delivery_address, contact_number } = props.customer;
   return (
@@ -33,13 +33,15 @@ const CustomerForm = (props) => {
             name="name"
             label="Full name"
             fullWidth
-            defaultValue={name}
+            value={name}
             error={values.nameError}
             helperText={values.nameError && "Name is required."}
-            onBlur={(e) => onBlur(e, "nameError", "name")}
+            onChange={(e) => onChange(e, "nameError", "name")}
           />
         </Grid>
         <Phone
+          setError={props.setError}
+          onChange={onChange}
           changeCustomerValue={props.changeCustomerValue}
           contact_number={contact_number}
           values={values}
@@ -53,10 +55,10 @@ const CustomerForm = (props) => {
             id="email"
             label="Email"
             name="email"
-            defaultValue={email}
+            value={email}
             error={values.emailError}
             helperText={values.emailError && "Email is required."}
-            onBlur={(e) => onBlur(e, "emailError", "email")}
+            onChange={(e) => onChange(e, "emailError", "email")}
           />
         </Grid>
         <Grid item xs={12}>
@@ -66,10 +68,10 @@ const CustomerForm = (props) => {
             name="address1"
             label="Address line"
             fullWidth
-            defaultValue={delivery_address}
+            value={delivery_address}
             error={values.addressError}
             helperText={values.addressError && "Address is required."}
-            onBlur={(e) => onBlur(e, "addressError", "delivery_address")}
+            onChange={(e) => onChange(e, "addressError", "delivery_address")}
           />
         </Grid>
       </Grid>

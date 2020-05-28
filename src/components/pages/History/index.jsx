@@ -21,7 +21,6 @@ class History extends React.Component {
   getHistory = async() => {
     try {
       const ip = await getIP();
-      console.log(ip)
       const history = await getHistory(ip);
       this.setState({
         history: history

@@ -66,6 +66,51 @@ const OrderProcess = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  const isEmpty = (str) => str === ""
+  
+  const validPhone = (str) => {
+    if(isEmpty(str)){
+      return false;
+    }
+    const phoneRe = /^[(]?[0-9]{3}[)]?[0-9]{3}[-]?[0-9]{4,6}$/im
+    if(!str.match(phoneRe)) {
+      return false;
+    }
+    return true;
+  }
+
+  const validEmail = (mail) => {
+    if(isEmpty(mail)){
+      return false;
+    }
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+      return false;
+    }
+    return false;
+  }
+
+  const validateOnBlur = (value, field, callback) => {
+    switch (field) {
+      case 'name':
+        setError('nameError', isEmpty(value));
+        break;
+      case 'email':
+        setError('emailError', !validEmail(value));
+        break;
+      case 'contact_number':
+        setError('phoneError', !validPhone(value));
+        break;
+      default:
+        setError('addressError', isEmpty(value));
+        break;
+    }
+    callback(field, value);
+  }
+
+  const setError = (eAttr, value) => {
+    values[eAttr] = value;
+  }
+
   return (
     <AppConsumer>
       {value => {
@@ -79,9 +124,18 @@ const OrderProcess = () => {
                       changeCustomerValue={changeCustomerValue}
                       values={values}
                       setValues={setValues}
+                      setError={setError}
+                      validateOnBlur={(value, field) => validateOnBlur(value, field, changeCustomerValue)}
                     />;
             case 1:
-              if(customer.name === "" || customer.email === "" || customer.contact_number === "" || customer.delivery_address === "") {
+              if(isEmpty(customer.name) || !validEmail(customer.email) || 
+                !validPhone(customer.contact_number) || isEmpty(customer.delivery_address)) {
+                setValues({
+                  nameError: isEmpty(customer.name),
+                  emailError: !validEmail(customer.email),
+                  phoneError: !validPhone(customer.contact_number),
+                  addressError: isEmpty(customer.delivery_address)
+                });
                 handleBack();
               }
               return <Order />;

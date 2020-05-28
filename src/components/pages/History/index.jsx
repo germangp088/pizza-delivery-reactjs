@@ -4,12 +4,14 @@ import Typography from '@material-ui/core/Typography';
 import { AppConsumer } from "../../../context";
 import Order from './Order';
 import { getIP, getHistory } from "../../../request";
+import Loading from '../../common/Loading';
 
 class History extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      history: null
+      history: null,
+      loading: true
     };
     this.getHistory = this.getHistory.bind(true);
   }
@@ -20,14 +22,19 @@ class History extends React.Component {
 
   getHistory = async() => {
     try {
+      this.setState({
+        loading: true
+      });
       const ip = await getIP();
       const history = await getHistory(ip);
       this.setState({
-        history: history
+        history: history,
+        loading: false
       });
     } catch (error) {
       this.setState({
-        errorMessage: error.message
+        errorMessage: error.message,
+        loading: false
       });
     }
   }
@@ -43,6 +50,7 @@ class History extends React.Component {
               {
                 order_id > 0 && finish()
               }
+              <Loading open={this.state.loading} />
               <FormHelperText error={true}>{ errorMessage && 'There was an error trying to retrieve information, come back later.'}</FormHelperText>
               <Typography variant="h4" align="center" gutterBottom>
                 History orders

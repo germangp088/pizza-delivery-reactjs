@@ -42,6 +42,7 @@ const Phone = (props) => {
           error={props.values.phoneError}
           helperText={props.values.phoneError && "Phone is required."}
           onChange={(e)=> onChange(e, "phoneError", "contact_number")}
+          onBlur={(e) => props.onBlur(e, "contact_number")}
           name="textmask"
           id="formatted-text-mask-input"
           inputComponent={TextMaskCustom}

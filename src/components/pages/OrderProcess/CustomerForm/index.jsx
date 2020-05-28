@@ -18,6 +18,9 @@ const CustomerForm = (props) => {
     }
   }
 
+  const onBlur = (e, field) => {
+    props.validateOnBlur(e.target.value, field);
+  }
 
   const { name, email, delivery_address, contact_number } = props.customer;
   return (
@@ -35,8 +38,9 @@ const CustomerForm = (props) => {
             fullWidth
             value={name}
             error={values.nameError}
-            helperText={values.nameError && "Name is required."}
+            helperText={values.nameError && "Invalid name."}
             onChange={(e) => onChange(e, "nameError", "name")}
+            onBlur={(e) => onBlur(e, "name")}
           />
         </Grid>
         <Phone
@@ -46,6 +50,7 @@ const CustomerForm = (props) => {
           contact_number={contact_number}
           values={values}
           setValues={props.setValues}
+          onBlur={onBlur}
         />
         <Grid item xs={12}>
           <TextField
@@ -57,8 +62,9 @@ const CustomerForm = (props) => {
             name="email"
             value={email}
             error={values.emailError}
-            helperText={values.emailError && "Email is required."}
+            helperText={values.emailError && "Invalid email."}
             onChange={(e) => onChange(e, "emailError", "email")}
+            onBlur={(e) => onBlur(e, "email")}
           />
         </Grid>
         <Grid item xs={12}>
@@ -70,8 +76,9 @@ const CustomerForm = (props) => {
             fullWidth
             value={delivery_address}
             error={values.addressError}
-            helperText={values.addressError && "Address is required."}
+            helperText={values.addressError && "Invalid address."}
             onChange={(e) => onChange(e, "addressError", "delivery_address")}
+            onBlur={(e) => onBlur(e, "delivery_address")}
           />
         </Grid>
       </Grid>

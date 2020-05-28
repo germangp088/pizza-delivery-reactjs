@@ -20,7 +20,8 @@ class AppProvider extends Component {
       ip: ''
     },
     order_id: 0,
-    errorMessage: ''
+    errorMessage: '',
+    loading: true
   };
 
   async componentDidMount() {
@@ -29,14 +30,17 @@ class AppProvider extends Component {
 
   getData = async() => {
     try {
+      this.changeLoading(true);
       await this.getProducts();
       await this.getShippingFee();
       await this.getCurrencies();
       await this.getIP();
+      this.changeLoading(false);
     } catch (error) {
       this.setState({
         errorMessage: error.message
       });
+      this.changeLoading(false);
     }
   }
 
@@ -113,19 +117,18 @@ class AppProvider extends Component {
     });
   }
 
+  cleanErrorMessage = () => {
+    this.setState({
+      errorMessage: ''
+    });
+  }
+
   finish = () => {
     this.setState({
       cart: [],
       subTotal: 0,
       total: 0,
       currency: this.state.currencies.find(x => x.currency === "Euro"),
-      customer: {
-        name: '',
-        email: '',
-        contact_number: '',
-        delivery_address: '',
-        ip: this.state.customer.ip
-      },
       order_id: 0
     });
   }
@@ -150,17 +153,28 @@ class AppProvider extends Component {
     };
     
     try {
+      this.setState({
+        loading: true
+      });
+      this.changeLoading(true);
       const order_id = await postOrder(order);
-      console.log({order_id})
       this.setState({
         order_id: order_id
       });
+      this.changeLoading(false);
       callback();
     } catch (error) {
       this.setState({
         errorMessage: error.message
       });
+      this.changeLoading(false);
     }
+  }
+
+  changeLoading(loading){
+    this.setState({
+      loading: loading
+    });
   }
 
   render() {
@@ -173,7 +187,8 @@ class AppProvider extends Component {
           finish: this.finish,
           changeCurrency: this.changeCurrency,
           changeCustomerValue: this.changeCustomerValue,
-          postOrder: this.postOrder
+          postOrder: this.postOrder,
+          cleanErrorMessage: this.cleanErrorMessage
         }}
       >
         {this.props.children}

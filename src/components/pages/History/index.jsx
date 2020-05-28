@@ -9,7 +9,7 @@ class History extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      history: []
+      history: null
     };
     this.getHistory = this.getHistory.bind(true);
   }
@@ -21,9 +21,7 @@ class History extends React.Component {
   getHistory = async() => {
     try {
       const ip = await getIP();
-      console.log(ip)
       const history = await getHistory(ip);
-      console.log({history})
       this.setState({
         history: history
       });
@@ -52,7 +50,7 @@ class History extends React.Component {
               {
                 (this.state.history && this.state.history.length === 0) &&
                 <Typography variant="h6" align="center" gutterBottom>
-                  Loading...
+                  You don't have any order yet.
                 </Typography>
               }
               {

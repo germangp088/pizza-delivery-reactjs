@@ -28,15 +28,8 @@ TextMaskCustom.propTypes = {
 
 const Phone = (props) => {
 
-  const onBlur = (e, eAttr, attr) =>{
-    console.log(e.target.value)
-    if(e.target.value === '(   )    -    '){
-      console.log(e.target.value)
-      props.setValues({ [eAttr]: true });
-    } else {
-      props.setValues({ [eAttr]: false });
-      props.changeCustomerValue(attr, e.target.value)
-    }
+  const onChange = (e, eAttr, attr) =>{
+    props.onChange(e, eAttr, attr, '(   )    -    ');
   }
 
   return (
@@ -45,10 +38,11 @@ const Phone = (props) => {
         <InputLabel htmlFor="formatted-text-mask-input">Phone</InputLabel>
         <Input
           required
-          defaultValue={props.contact_number}
+          value={props.contact_number}
           error={props.values.phoneError}
           helperText={props.values.phoneError && "Phone is required."}
-          onBlur={(e)=> onBlur(e, "phoneError", "contact_number")}
+          onChange={(e)=> onChange(e, "phoneError", "contact_number")}
+          onBlur={(e) => props.onBlur(e, "contact_number")}
           name="textmask"
           id="formatted-text-mask-input"
           inputComponent={TextMaskCustom}

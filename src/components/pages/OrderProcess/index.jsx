@@ -12,6 +12,7 @@ import { AppConsumer } from "../../../context";
 import { Redirect } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
+import { FormHelperText } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,10 +67,55 @@ const OrderProcess = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  const isEmpty = (str) => str === ""
+  
+  const validPhone = (str) => {
+    if(isEmpty(str)){
+      return false;
+    }
+    if(!/^[(]?[0-9]{3}[)]? [0-9]{3}[-]?[0-9]{4}$/im.test(str)) {
+      return false;
+    }
+    return true;
+  }
+
+  const validEmail = (mail) => {
+    if(isEmpty(mail)){
+      return false;
+    }
+    // eslint-disable-next-line 
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+      return false;
+    }
+    return true;
+  }
+
+  const validateOnBlur = (value, field, callback) => {
+    switch (field) {
+      case 'name':
+        setError('nameError', isEmpty(value));
+        break;
+      case 'email':
+        setError('emailError', !validEmail(value));
+        break;
+      case 'contact_number':
+        setError('phoneError', !validPhone(value));
+        break;
+      default:
+        setError('addressError', isEmpty(value));
+        break;
+    }
+    callback(field, value);
+  }
+
+  const setError = (eAttr, value) => {
+    values[eAttr] = value;
+  }
+
   return (
     <AppConsumer>
       {value => {
-        const { cart, customer, changeCustomerValue, postOrder, order_id, finish } = value;
+        const { cart, customer, changeCustomerValue, postOrder, order_id, finish, errorMessage } = value;
 
         const getStepContent = (step) => {
           switch (step) {
@@ -79,9 +125,18 @@ const OrderProcess = () => {
                       changeCustomerValue={changeCustomerValue}
                       values={values}
                       setValues={setValues}
+                      setError={setError}
+                      validateOnBlur={(value, field) => validateOnBlur(value, field, changeCustomerValue)}
                     />;
             case 1:
-              if(customer.name === "" || customer.email === "" || customer.contact_number === "" || customer.delivery_address === "") {
+              if(isEmpty(customer.name) || !validEmail(customer.email) || 
+                !validPhone(customer.contact_number) || isEmpty(customer.delivery_address)) {
+                setValues({
+                  nameError: isEmpty(customer.name),
+                  emailError: !validEmail(customer.email),
+                  phoneError: !validPhone(customer.contact_number),
+                  addressError: isEmpty(customer.delivery_address)
+                });
                 handleBack();
               }
               return <Order />;
@@ -127,15 +182,18 @@ const OrderProcess = () => {
                         Back
                       </Button>
                       {
-                        activeStep === steps.length - 1 ? 
-                        <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => postOrder(handleNext)}
-                        className={classes.button}
-                      >
-                        Place order
-                      </Button> :
+                        activeStep === steps.length - 1 ?
+                        <React.Fragment>
+                          <FormHelperText error={true}>{ errorMessage && 'There was an error trying to place order.'}</FormHelperText>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => postOrder(handleNext)}
+                            className={classes.button}
+                          >
+                            Place order
+                          </Button> 
+                        </React.Fragment> :
                       <Button
                         variant="contained"
                         color="primary"

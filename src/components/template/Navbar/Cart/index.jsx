@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import Badge from '@material-ui/core/Badge';
 import { FormHelperText } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
+import exchange from '../../../common/exchange';
 
 const Cart = (props) => {
     const [open, setOpen] = React.useState(false);
@@ -32,7 +33,7 @@ const Cart = (props) => {
     return (
         <AppConsumer>
           {value => {
-            const { cart, subTotal, removeToCart } = value;
+            const { cart, subTotal, removeToCart, currency } = value;
             let products = 0;
             cart.forEach((product) => {
               products += product.quantity
@@ -64,14 +65,17 @@ const Cart = (props) => {
                               <React.Fragment>
                                 <MenuList autoFocusItem={open} id="menu-list-grow">
                                   {cart.map((product) => (
-                                      <CartMenuItem key={`Cart_${product.id}`} product={product} removeToCart={removeToCart} />
+                                      <CartMenuItem key={`Cart_${product.id}`}
+                                        product={product}
+                                        removeToCart={removeToCart}
+                                        symbol={currency.symbol} />
                                   ))}
                                 </MenuList>
                                 {
                                   cart.length > 0 &&
                                   <React.Fragment>
                                     <MenuItem>
-                                      <FormHelperText component="p">Sub Total: €{subTotal}</FormHelperText>
+                                      <FormHelperText component="p">Sub Total: {currency.symbol}{exchange(subTotal, currency.symbol)}</FormHelperText>
                                     </MenuItem>
                                     <Link  to={{pathname : "/orderProcess"}}>
                                       <Button

@@ -21,7 +21,10 @@ const Products = (props) => {
         </Typography>
         <Grid container spacing={4}>
           {props.products.map((product) => (
-            <Product key={`Product_${product.id}`} product={product} cart={props.cart} />
+            <Product key={`Product_${product.id}`}
+              product={product}
+              cart={props.cart} 
+              symbol={props.symbol}/>
           ))}
         </Grid>
       </div>

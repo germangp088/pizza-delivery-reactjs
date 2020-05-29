@@ -177,23 +177,21 @@ const OrderProcess = () => {
                 ) : (
                   <div>
                     <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+                    <FormHelperText error={true}>{ errorMessage && 'There was an error trying to place order.'}</FormHelperText>
                     <div>
                       <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                         Back
                       </Button>
                       {
                         activeStep === steps.length - 1 ?
-                        <React.Fragment>
-                          <FormHelperText error={true}>{ errorMessage && 'There was an error trying to place order.'}</FormHelperText>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => postOrder(handleNext)}
-                            className={classes.button}
-                          >
-                            Place order
-                          </Button> 
-                        </React.Fragment> :
+                       <Button
+                         variant="contained"
+                         color="primary"
+                         onClick={() => postOrder(handleNext)}
+                         className={classes.button}
+                       >
+                         Place order
+                       </Button> :
                       <Button
                         variant="contained"
                         color="primary"

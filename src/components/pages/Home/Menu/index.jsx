@@ -6,6 +6,8 @@ import CakeIcon from '@material-ui/icons/Cake';
 import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
 import Hero from './Hero';
 import Products from './Products';
+import { AppConsumer } from "../../../../context";
+import Currency from '../../../common/Currency';
 
 const useStyles = makeStyles((theme) => ({
   cardGrid: {
@@ -28,30 +30,52 @@ const Menu = (props) => {
   const drinksCart = filterType(props.cart, "Drink");
 
   return (
-    <React.Fragment>
-      <Hero />
-      <Container className={classes.cardGrid} maxWidth="md">
-        {
-          pizzas.length > 0 && 
-          <Products productType="Pizzas" products={pizzas} cart={pizzasCart}>
-            <LocalPizzaIcon fontSize="large"/>
-          </Products>
-        }
-        {
-          desserts.length > 0 && 
-          <Products productType="Desserts" products={desserts} cart={dessertsCart}>
-            <CakeIcon fontSize="large"/>
-          </Products>
-        }
-        {
-          drinks.length > 0 && 
-          <Products productType="Drinks" products={drinks} cart={drinksCart}>
-            <LocalDrinkIcon fontSize="large"/>
-          </Products>
-        }
-      </Container>
-    </React.Fragment>
+    <AppConsumer>
+      {value => {
+          const { currencies, currency, changeCurrency } = value;
+          return (
+            <React.Fragment>
+              <Hero />
+              <Container className={classes.cardGrid} maxWidth="md" align="center">
+                {
+                  currencies.length > 0 && 
+                  <Currency
+                      currencies={currencies}
+                      currency={currency}
+                      changeCurrency={changeCurrency} />
+                }
+                {
+                  pizzas.length > 0 && 
+                  <Products productType="Pizzas"
+                    products={pizzas}
+                    cart={pizzasCart} 
+                    symbol={currency.symbol}>
+                    <LocalPizzaIcon fontSize="large"/>
+                  </Products>
+                }
+                {
+                  desserts.length > 0 && 
+                  <Products productType="Desserts"
+                    products={desserts}
+                    cart={dessertsCart}
+                    symbol={currency.symbol}>
+                    <CakeIcon fontSize="large"/>
+                  </Products>
+                }
+                {
+                  drinks.length > 0 && 
+                  <Products productType="Drinks"
+                    products={drinks} 
+                    art={drinksCart}
+                    symbol={currency.symbol}>
+                    <LocalDrinkIcon fontSize="large"/>
+                  </Products>
+                }
+              </Container>
+            </React.Fragment>
+          );
+        }}
+    </AppConsumer>
   );
 }
-
 export default Menu;

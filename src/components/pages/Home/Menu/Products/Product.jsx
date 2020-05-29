@@ -11,6 +11,7 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import IconButton from '@material-ui/core/IconButton';
 import Ingredients from './Ingredients';
 import { AppConsumer } from "../../../../../context";
+import exchange from '../../../../common/exchange';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -77,7 +78,7 @@ const Product = (props) => {
               </CardContent>
               <CardActions>
                 <Typography gutterBottom variant="h5" component="h2">
-                  €{parseFloat(product.price).toFixed(2)}
+                  {props.symbol}{exchange(product.price, props.symbol)}
                 </Typography>
                 <TextField
                   id="quantity"

@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import Product from './Product';
 import Item from '../../../common/Item';
-import Currency from './Currency';
+import Currency from '../../../common/Currency';
 import exchange from '../../../common/exchange';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,7 +27,7 @@ const Order = () => {
 
         return (
             <React.Fragment>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h5" gutterBottom>
                   Order summary
                 </Typography>
                 <Currency
